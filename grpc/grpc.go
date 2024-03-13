@@ -54,6 +54,7 @@ func RegisterGrpc(servername string, f func(server *grpc.Server)) error {
 		log.Fatalf("failed to serve:%v", err)
 		return err
 	}
+	log.Println("55555555")
 	return nil
 
 }
