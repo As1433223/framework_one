@@ -31,6 +31,7 @@ func InitMysql(servername string, MysqlFunc func(Db *gorm.DB) error) error {
 	MysqlConfig.Password = data["MysqlConf"].(map[interface{}]interface{})["Password"].(string)
 	MysqlConfig.Host = data["MysqlConf"].(map[interface{}]interface{})["Host"].(string)
 	MysqlConfig.Port = data["MysqlConf"].(map[interface{}]interface{})["Port"].(int)
+	MysqlConfig.Database = data["MysqlConf"].(map[interface{}]interface{})["Database"].(string)
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		MysqlConfig.Username, MysqlConfig.Password, MysqlConfig.Host, MysqlConfig.Port, MysqlConfig.Database,
 	)
