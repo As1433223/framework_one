@@ -31,6 +31,7 @@ func getConfig(servername string) (GrpcConf, error) {
 }
 func RegisterGrpc(servername string, f func(server *grpc.Server)) error {
 	conf, err := getConfig(servername)
+	log.Println(conf, "++++++++++++++")
 	if err != nil {
 		return err
 	}
