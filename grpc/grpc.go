@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/As1433223/framework_one/config"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 	"gopkg.in/yaml.v2"
 	"log"
@@ -44,7 +46,7 @@ func RegisterGrpc(servername string, f func(server *grpc.Server)) error {
 	s := grpc.NewServer()
 	reflection.Register(s)
 	f(s)
-	//grpc_health_v1.RegisterHealthServer(s, health.NewServer())
+	grpc_health_v1.RegisterHealthServer(s, health.NewServer())
 	err = s.Serve(listen)
 	if err != nil {
 		log.Fatalf("failed to serve:%v", err)
