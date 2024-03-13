@@ -6,7 +6,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/hashicorp/consul/api"
 	"gopkg.in/yaml.v2"
-	"log"
 	"net"
 )
 
@@ -46,9 +45,8 @@ func GetIp() (ip []string) {
 	}
 	return ip
 }
-func RegisterConsul(servername string, port int) error {
+func RegisterConsul(servername string, port int, Name string) error {
 	conf, err := getConfig(servername)
-	log.Println(conf, "//////////////////////////")
 	if err != nil {
 		return err
 	}
@@ -61,7 +59,7 @@ func RegisterConsul(servername string, port int) error {
 	ip := GetIp()
 	err = client.Agent().ServiceRegister(&api.AgentServiceRegistration{
 		ID:      uuid.NewString(),
-		Name:    servername,
+		Name:    Name,
 		Tags:    []string{"Grpc"},
 		Port:    port,
 		Address: ip[0],

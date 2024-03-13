@@ -13,7 +13,7 @@ import (
 )
 
 type GrpcConf struct {
-	Ip   string `yaml:"Ip"`
+	Name string `yaml:"Name"`
 	Port int    `yaml:"Port"`
 }
 
@@ -25,7 +25,7 @@ func getConfig(servername string) (GrpcConf, error) {
 	var GrpcConfig GrpcConf
 	var data map[interface{}]interface{}
 	yaml.Unmarshal([]byte(conf), &data)
-	GrpcConfig.Ip = data["GrpcConf"].(map[interface{}]interface{})["Ip"].(string)
+	GrpcConfig.Name = data["GrpcConf"].(map[interface{}]interface{})["Name"].(string)
 	GrpcConfig.Port = data["GrpcConf"].(map[interface{}]interface{})["Port"].(int)
 	return GrpcConfig, nil
 }
@@ -39,13 +39,14 @@ func RegisterGrpc(servername string, f func(server *grpc.Server)) error {
 		log.Println("Listening failed:", conf.Port)
 		return err
 	}
-	err = config.RegisterConsul(servername, conf.Port)
+	err = config.RegisterConsul(servername, conf.Port, conf.Name)
 	if err != nil {
 		return err
 	}
 	s := grpc.NewServer()
 	reflection.Register(s)
 	f(s)
+
 	grpc_health_v1.RegisterHealthServer(s, health.NewServer())
 	log.Println()
 	err = s.Serve(listen)
