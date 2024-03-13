@@ -45,7 +45,9 @@ func RegisterGrpc(servername string, f func(server *grpc.Server)) error {
 	}
 	s := grpc.NewServer()
 	reflection.Register(s)
+	log.Println("2222")
 	f(s)
+	log.Println("33333")
 	grpc_health_v1.RegisterHealthServer(s, health.NewServer())
 	err = s.Serve(listen)
 	if err != nil {
